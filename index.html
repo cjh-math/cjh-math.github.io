@@ -175,7 +175,7 @@
   const mockDays = [['2026-10-10', ['18:30', '19:00', '19:30', '20:00', '20:30']], ['2026-10-14', ['19:00', '19:30', '20:00', '20:30']]];
   const mockApi = {
     getPageData: () => ({ title: '평촌청솔학원 최준호 T', subtitle: '예비 고3 수학학습상담 예약', kakao: 'https://pf.kakao.com/_nGLZX/chat', phone: '010-9069-4464',
-      notice: ['학생과 함께 학원에 오실 때, 나눠 드린 The Trend 모의고사 시험지를 풀어서 가져오시거나, 요즘 공부하고 있는 교재를 가져오시면 더 구체적인 상담이 가능합니다.', '시험지는 시험을 마친 뒤 채점만 해서 가져와 주세요. 오답 정리나 다시 풀기는 시험지가 아닌 별도의 공책에 해 주시면, 학생이 처음 푼 과정을 그대로 볼 수 있어 상담에 큰 도움이 됩니다. 풀이 흔적이 지저분해도 괜찮습니다.', '기타 문의 사항은 아래로 연락 주세요.'],
+      notice: ['학생과 함께 상담에 오시는 경우, 나눠 드린 The Trend 모의고사 시험지를 풀어서 가져오시거나, 요즘 공부하고 있는 교재를 가져오시면 더 구체적인 상담이 가능합니다.', '시험지는 시험을 마친 뒤 채점만 해서 가져와 주세요. 오답 정리나 다시 풀기는 시험지가 아닌 별도의 공책에 해 주시면, 학생이 처음 푼 과정을 그대로 볼 수 있어 상담에 큰 도움이 됩니다. 풀이 흔적이 지저분해도 괜찮습니다.', '기타 문의 사항은 아래로 연락 주세요.'],
       slots: mockDays.flatMap(([d, ts]) => ts.map(t => ({ date: d, time: t, open: !mockDb[d + ' ' + t] }))) }),
     book: f => { mockDb[f.date + ' ' + f.time] = { name: f.student, last4: f.phone.replace(/\D/g, '').slice(-4) }; return { ok: true, date: f.date, time: f.time }; },
     lookup: q => ({ ok: true, found: Object.keys(mockDb).filter(k => mockDb[k].name === q.name && mockDb[k].last4 === q.last4).sort()
