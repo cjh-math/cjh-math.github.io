@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>예비 고3 수학학습상담 예약</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="예비 고3 수학학습상담 예약">
+<meta property="og:description" content="평촌청솔학원 최준호 T · 원하는 상담 시간을 골라 예약해 주세요.">
+<meta property="og:image" content="https://n2bnorm-cyber.github.io/consult/emblem.png">
+<meta property="og:url" content="https://n2bnorm-cyber.github.io/consult/">
+<link rel="icon" type="image/png" href="https://n2bnorm-cyber.github.io/consult/emblem.png">
+<style>
+  :root {
+    --bg: #f4f6f9; --card: #ffffff; --ink: #1d2433; --sub: #5d6778; --line: #dde2ea;
+    --blue: #1f5fbf; --blue-soft: #e7effb; --gray: #eceef1; --gray-ink: #9aa1ab;
+    --warn: #b35900; --warn-soft: #fff1e0;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+    font-size: 16px; line-height: 1.5; word-break: keep-all; overflow-wrap: break-word; }
+  .wrap { max-width: 520px; margin: 0 auto; padding: 20px 16px 48px; }
+  .head { display: flex; align-items: center; gap: 12px; margin: 4px 0 14px; }
+  .head .emblem { width: 56px; height: auto; flex: none; }
+  h1 { font-size: 15px; font-weight: 600; color: var(--sub); margin: 0 0 2px; }
+  .subtitle { font-size: 21px; font-weight: 700; margin: 0; line-height: 1.3; }
+  .foot { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 28px; color: var(--sub); font-size: 13px; }
+  .foot .emblem { width: 28px; height: auto; }
+  .notice { color: var(--sub); font-size: 14px; margin: 0 0 16px; padding: 12px 14px;
+    background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--blue); border-radius: 10px; }
+  .notice p { margin: 0 0 6px; }
+  .notice p:last-child { margin-bottom: 0; }
+  .contact { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+  .contact a { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 10px;
+    font-size: 15px; font-weight: 700; text-decoration: none; }
+  .contact a svg { width: 20px; height: 20px; flex: none; }
+  .contact a .go { margin-left: auto; font-size: 20px; line-height: 1; }
+  .contact a.kakao { background: #FEE500; color: #191919; }
+  .contact a.call { background: var(--card); color: var(--blue); border: 2px solid var(--blue); }
+  .tabs { display: flex; background: var(--gray); border-radius: 12px; padding: 4px; margin-bottom: 16px; }
+  .tabs button { flex: 1; border: 0; background: none; padding: 10px; font-size: 15px; font-weight: 600;
+    color: var(--sub); border-radius: 9px; cursor: pointer; font-family: inherit; }
+  .tabs button.on { background: var(--card); color: var(--blue); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+  .legend { display: flex; gap: 16px; font-size: 13px; color: var(--sub); margin-bottom: 16px; align-items: center; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .chip { width: 14px; height: 14px; border-radius: 4px; display: inline-block; }
+  .chip.open { border: 2px solid var(--blue); background: var(--card); }
+  .chip.full { background: var(--gray); border: 2px solid var(--line); }
+  .refresh { margin-left: auto; background: none; border: 1px solid var(--line); border-radius: 8px;
+    padding: 4px 10px; font-size: 13px; color: var(--sub); cursor: pointer; }
+  .day { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; margin-bottom: 12px; text-align: left; }
+  .day h2 { font-size: 16px; margin: 0 0 10px; }
+  .day h2 small { color: var(--sub); font-weight: normal; margin-left: 6px; font-size: 13px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .slot { border-radius: 10px; padding: 10px 4px; font-size: 16px; font-weight: 600; text-align: center;
+    border: 2px solid var(--blue); background: var(--card); color: var(--blue); cursor: pointer;
+    font-family: inherit; }
+  .slot:hover { background: var(--blue-soft); }
+  .slot.sel { background: var(--blue); color: #fff; }
+  .slot[disabled] { border-color: var(--line); background: var(--gray); color: var(--gray-ink); cursor: default; }
+  .slot[disabled] .t { text-decoration: line-through; }
+  .slot.mine[disabled] { border: 2px dashed var(--blue); background: var(--blue-soft); color: var(--blue); }
+  .slot.mine[disabled] .t { text-decoration: none; }
+  .slot .s { display: block; font-size: 12px; font-weight: normal; }
+  form { background: var(--card); border: 2px solid var(--blue); border-radius: 14px; padding: 16px; margin-top: 16px; }
+  .picked { font-size: 17px; font-weight: 700; color: var(--blue); margin: 0 0 12px; }
+  label { display: block; font-size: 14px; font-weight: 600; margin: 12px 0 4px; }
+  label .opt { font-weight: normal; color: var(--sub); }
+  input[type=text], input[type=tel], textarea { width: 100%; padding: 10px 12px; font-size: 16px;
+    border: 1px solid var(--line); border-radius: 8px; font-family: inherit; color: var(--ink); background: #fff; }
+  textarea { min-height: 80px; resize: vertical; }
+  .agree { display: flex; gap: 8px; align-items: flex-start; font-weight: normal; font-size: 13px; color: var(--sub); margin-top: 14px; }
+  .agree input { margin-top: 3px; width: 18px; height: 18px; flex: none; }
+  .submit { width: 100%; margin-top: 16px; padding: 14px; font-size: 17px; font-weight: 700; border: 0;
+    border-radius: 10px; background: var(--blue); color: #fff; cursor: pointer; font-family: inherit; }
+  .submit[disabled] { opacity: .5; cursor: default; }
+  .msg { margin-top: 12px; padding: 10px 12px; border-radius: 8px; background: var(--warn-soft); color: var(--warn); font-size: 14px; }
+  .msg::before { content: "⚠ "; }
+  .note { margin-top: 14px; padding: 10px 12px; border-radius: 8px; background: var(--blue-soft); color: var(--blue); font-size: 15px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .note .emblem { width: 26px; height: auto; flex: none; }
+  .done { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 28px 18px; text-align: center; }
+  .done .mark .emblem { width: 84px; height: auto; }
+  .done .when { font-size: 20px; font-weight: 700; margin: 12px 0 4px; }
+  .done p { color: var(--sub); font-size: 14px; margin: 6px 0; }
+  .empty, .loading { text-align: center; color: var(--sub); padding: 24px 0; }
+  #checkForm { margin-top: 0; }
+  .result { margin-top: 14px; padding: 14px; border-radius: 10px; background: var(--blue-soft); text-align: center; }
+  .result .when { font-size: 18px; font-weight: 700; color: var(--blue); margin: 2px 0; }
+  .result p { margin: 4px 0 0; color: var(--sub); font-size: 14px; }
+  .result .ask { color: var(--ink); font-weight: 600; margin-top: 12px; }
+  .result .day { margin: 10px 0 0; }
+  .btns { display: flex; gap: 8px; margin-top: 12px; }
+  .btns button { flex: 1; padding: 11px 6px; font-size: 15px; font-weight: 700; border-radius: 10px;
+    cursor: pointer; font-family: inherit; border: 2px solid var(--blue); background: var(--card); color: var(--blue); }
+  .btns button.primary { background: var(--blue); color: #fff; }
+  .btns button.danger { border-color: var(--warn); color: var(--warn); background: var(--card); }
+  .btns button.danger.fill { background: var(--warn); color: #fff; }
+  .btns button.ghost { border-color: var(--line); color: var(--sub); }
+  .btns button[disabled] { opacity: .45; cursor: default; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="head">
+    <img class="emblem" alt="">
+    <div>
+      <h1 id="title"></h1>
+      <p class="subtitle" id="subtitle">상담 예약</p>
+    </div>
+  </header>
+  <div class="notice" id="notice" hidden></div>
+
+  <div class="tabs">
+    <button type="button" id="tabBook" class="on">예약하기</button>
+    <button type="button" id="tabCheck">예약 확인·변경</button>
+  </div>
+
+  <div id="checkPane" hidden>
+    <form id="checkForm">
+      <label for="cName">학생 이름</label>
+      <input type="text" id="cName" maxlength="30" placeholder="예약할 때 적은 이름">
+      <label for="cLast4">학부모 연락처 끝 4자리</label>
+      <input type="tel" id="cLast4" inputmode="numeric" maxlength="4" placeholder="예: 5678">
+      <button class="submit" type="submit" id="cSubmit">확인하기</button>
+      <div class="msg" id="cMsg" hidden></div>
+      <div id="cResult"></div>
+    </form>
+  </div>
+
+  <div id="bookPane">
+  <div id="pick">
+    <div class="legend">
+      <span><i class="chip open"></i>신청 가능</span>
+      <span><i class="chip full"></i>✕ 마감</span>
+      <button class="refresh" type="button" id="refresh">↻ 새로고침</button>
+    </div>
+    <div class="msg" id="topmsg" hidden style="margin:0 0 12px"></div>
+    <div id="days"><div class="loading">시간표를 불러오는 중…</div></div>
+
+    <form id="form" hidden autocomplete="on">
+      <p class="picked" id="picked"></p>
+      <label for="student">학생 이름</label>
+      <input type="text" id="student" maxlength="30" required>
+      <label for="phone">학부모 연락처</label>
+      <input type="tel" id="phone" inputmode="tel" placeholder="010-1234-5678" maxlength="20" required>
+      <label for="memo">상담 희망 내용 <span class="opt">(선택)</span></label>
+      <textarea id="memo" maxlength="500" placeholder="미리 알려 주시면 상담 준비에 도움이 됩니다."></textarea>
+      <label class="agree"><input type="checkbox" id="agree">상담 일정 안내를 위해 학생 이름과 연락처를 수집하는 데 동의합니다. 상담이 끝나면 파기합니다.</label>
+      <button class="submit" type="submit" id="submit">예약하기</button>
+      <div class="msg" id="msg" hidden></div>
+    </form>
+  </div>
+
+  <div class="done" id="done" hidden>
+    <div class="mark"><img class="emblem" alt=""></div>
+    <div class="when" id="doneWhen"></div>
+    <p>상담이 예약되었습니다.</p>
+    <p>시간 변경·취소는 「예약 확인·변경」 탭에서 할 수 있습니다.</p>
+  </div>
+  </div>
+
+  <footer class="foot"><img class="emblem" alt=""><span id="footName"></span></footer>
+</div>
+
+<script>
+  // 서버 호출 3갈래: Apps Script 화면 안 = google.script.run / GitHub Pages = 아래 주소로 JSON / 내 PC 파일 = 가짜 서버
+  const API_URL = 'https://script.google.com/macros/s/AKfycbyPuIwd4l1KgbMj3sajS70cjImYzYWRh3i-B30QIU_rbNyJIp1BwK2c07ypM8PV0K5wEQ/exec';
+  const MODE = (typeof google !== 'undefined' && google.script) ? 'gas' : location.protocol === 'file:' ? 'mock' : 'api';
+  const mockDb = { '2026-10-10 18:30': { name: '테스트', last4: '0000' }, '2026-10-14 20:30': { name: '다른', last4: '9999' } };
+  const mockDays = [['2026-10-10', ['18:30', '19:00', '19:30', '20:00', '20:30']], ['2026-10-14', ['19:00', '19:30', '20:00', '20:30']]];
+  const mockApi = {
+    getPageData: () => ({ title: '평촌청솔학원 최준호 T', subtitle: '예비 고3 수학학습상담 예약', kakao: 'https://pf.kakao.com/_nGLZX/chat', phone: '010-9069-4464',
+      notice: ['학생과 함께 학원에 오실 때, 나눠 드린 The Trend 모의고사 시험지를 풀어서 가져오시거나, 요즘 공부하고 있는 교재를 가져오시면 더 구체적인 상담이 가능합니다.', '시험지는 시험을 마친 뒤 채점만 해서 가져와 주세요. 오답 정리나 다시 풀기는 시험지가 아닌 별도의 공책에 해 주시면, 학생이 처음 푼 과정을 그대로 볼 수 있어 상담에 큰 도움이 됩니다. 풀이 흔적이 지저분해도 괜찮습니다.', '기타 문의 사항은 아래로 연락 주세요.'],
+      slots: mockDays.flatMap(([d, ts]) => ts.map(t => ({ date: d, time: t, open: !mockDb[d + ' ' + t] }))) }),
+    book: f => { mockDb[f.date + ' ' + f.time] = { name: f.student, last4: f.phone.replace(/\D/g, '').slice(-4) }; return { ok: true, date: f.date, time: f.time }; },
+    lookup: q => ({ ok: true, found: Object.keys(mockDb).filter(k => mockDb[k].name === q.name && mockDb[k].last4 === q.last4).sort()
+      .map(k => ({ date: k.slice(0, 10), time: k.slice(11) })) }),
+    cancelMine: q => { delete mockDb[q.date + ' ' + q.time]; return { ok: true }; },
+    changeMine: q => { mockDb[q.newDate + ' ' + q.newTime] = mockDb[q.date + ' ' + q.time]; delete mockDb[q.date + ' ' + q.time]; return { ok: true, date: q.newDate, time: q.newTime }; },
+  };
+  function call(fn, arg) {
+    if (MODE === 'mock') return new Promise(res => setTimeout(() => res(mockApi[fn](arg)), 300));
+    if (MODE === 'gas') return new Promise((res, rej) => google.script.run.withSuccessHandler(res).withFailureHandler(rej)[fn](arg));
+    return fetch(API_URL, { method: 'POST', body: JSON.stringify({ fn: fn, arg: arg }) })
+      .then(r => r.json())
+      .then(r => { if (r && r.error) throw new Error(r.msg); return r; });
+  }
+
+  const $ = id => document.getElementById(id);
+  const EMBLEM = 'data:image/png;base64,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';
+  document.querySelectorAll('img.emblem').forEach(i => { i.src = EMBLEM; });
+  const WD = ['일', '월', '화', '수', '목', '금', '토'];
+  const key = s => s.date + ' ' + s.time;
+  let picked = null;
+
+  function dayLabel(date) {
+    const [y, m, d] = date.split('-').map(Number);
+    return m + '월 ' + d + '일 (' + WD[new Date(Date.UTC(y, m - 1, d)).getUTCDay()] + ')';
+  }
+  const when = s => dayLabel(s.date) + ' ' + s.time;
+
+  function el(tag, cls, text) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  const ICON_TALK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.8 5.3 4.6 6.7L5.6 21l4-2.6c.8.1 1.6.2 2.4.2 5.5 0 10-3.6 10-8S17.5 3 12 3z"/></svg>';
+  const ICON_CALL = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>';
+
+  /** 안내 상자 아래 문의 버튼 (카카오톡 채널 · 전화) */
+  function contactButtons(kakao, phone) {
+    const row = el('div', 'contact');
+    const add = (cls, href, blank, icon, label) => {
+      const a = el('a', cls);
+      a.href = href;
+      if (blank) { a.target = '_blank'; a.rel = 'noopener noreferrer'; a.referrerPolicy = 'no-referrer'; }
+      a.innerHTML = icon;
+      a.append(el('span', '', label), el('span', 'go', '›'));
+      row.appendChild(a);
+    };
+    if (kakao) add('kakao', kakao, true, ICON_TALK, '카카오톡 채널로 바로 문의하기');
+    if (phone) add('call', 'tel:' + phone.replace(/-/g, ''), false, ICON_CALL, '전화 문의 ' + phone);
+    return row;
+  }
+
+  /** 날짜별 시간 버튼. opt: { selKey, mineKey, onPick } */
+  function slotGrid(box, slots, opt) {
+    box.textContent = '';
+    if (!slots) { box.appendChild(el('div', 'loading', '시간표를 불러오는 중…')); return; }
+    if (!slots.length) { box.appendChild(el('div', 'empty', '지금 신청할 수 있는 상담 시간이 없습니다.')); return; }
+    const byDate = {};
+    slots.forEach(s => (byDate[s.date] = byDate[s.date] || []).push(s));
+    Object.keys(byDate).forEach(date => {
+      const list = byDate[date];
+      const left = list.filter(s => s.open).length;
+      const sec = el('section', 'day');
+      const h = el('h2', '', dayLabel(date));
+      h.appendChild(el('small', '', left ? '남은 시간 ' + left + '개' : '전부 마감'));
+      const grid = el('div', 'grid');
+      list.forEach(s => {
+        const mine = key(s) === opt.mineKey;
+        const b = el('button', 'slot');
+        b.type = 'button';
+        b.append(el('span', 't', s.time), el('span', 's', mine ? '현재 예약' : s.open ? '신청 가능' : '✕ 마감'));
+        if (!s.open || mine) b.disabled = true;
+        if (mine) b.classList.add('mine');
+        if (s.open && key(s) === opt.selKey) b.classList.add('sel');
+        b.addEventListener('click', () => opt.onPick(s));
+        grid.appendChild(b);
+      });
+      sec.append(h, grid);
+      box.appendChild(sec);
+    });
+  }
+
+  // ===== 예약하기 =====
+  let current = null;
+  function render() {
+    if (picked && !current.some(s => s.open && key(s) === key(picked))) picked = null;
+    slotGrid($('days'), current, { selKey: picked && key(picked), onPick: choose });
+    $('form').hidden = !picked;
+  }
+
+  function load() {
+    return call('getPageData').then(d => {
+      $('title').textContent = d.title;
+      $('footName').textContent = d.title;
+      $('subtitle').textContent = d.subtitle;
+      document.title = d.subtitle + ' · ' + d.title;
+      const notice = $('notice');
+      notice.textContent = '';
+      [].concat(d.notice).forEach(t => notice.appendChild(el('p', '', t)));
+      notice.appendChild(contactButtons(d.kakao, d.phone));
+      notice.hidden = false;
+      current = d.slots;
+      render();
+    }).catch(() => {
+      $('days').innerHTML = '<div class="empty">시간표를 불러오지 못했습니다. 잠시 후 새로고침해 주세요.</div>';
+    });
+  }
+
+  function choose(s) {
+    picked = { date: s.date, time: s.time };
+    $('picked').textContent = when(s);
+    $('msg').hidden = true;
+    $('topmsg').hidden = true;
+    render();
+    $('form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function showMsg(t) { $('msg').textContent = t; $('msg').hidden = false; }
+
+  $('refresh').addEventListener('click', load);
+  $('form').addEventListener('submit', e => {
+    e.preventDefault();
+    if (!picked) return;
+    const f = {
+      date: picked.date, time: picked.time,
+      student: $('student').value.trim(), phone: $('phone').value.trim(),
+      memo: $('memo').value.trim(), agree: $('agree').checked,
+    };
+    if (!f.student) return showMsg('학생 이름을 적어 주세요.');
+    if (f.phone.replace(/\D/g, '').length < 9) return showMsg('연락처를 확인해 주세요. (예: 010-1234-5678)');
+    if (!f.agree) return showMsg('개인정보 수집에 동의해 주세요.');
+    $('submit').disabled = true;
+    $('submit').textContent = '예약하는 중…';
+    call('book', f).then(r => {
+      if (r.ok) {
+        $('pick').hidden = true;
+        $('doneWhen').textContent = when(r);
+        $('done').hidden = false;
+        window.scrollTo(0, 0);
+        return;
+      }
+      showMsg(r.msg);
+      if (r.reload) {
+        picked = null;
+        $('topmsg').textContent = r.msg;
+        $('topmsg').hidden = false;
+        load().then(() => window.scrollTo(0, 0));
+      }
+    }).catch(() => showMsg('예약 중 문제가 생겼습니다. 잠시 후 다시 눌러 주세요.'))
+      .finally(() => { $('submit').disabled = false; $('submit').textContent = '예약하기'; });
+  });
+
+  // ===== 예약 확인·변경·취소 =====
+  let cred = null, found = [], mode = null, cSlots = null, busy = false;
+
+  function showCMsg(t) { $('cMsg').textContent = t; $('cMsg').hidden = !t; }
+
+  function btnRow(items) {
+    const row = el('div', 'btns');
+    items.forEach(([label, cls, fn, disabled]) => {
+      const b = el('button', cls, label);
+      b.type = 'button';
+      b.disabled = busy || !!disabled;
+      b.addEventListener('click', fn);
+      row.appendChild(b);
+    });
+    return row;
+  }
+
+  function renderCheck(note) {
+    const out = $('cResult');
+    out.textContent = '';
+    if (note) {
+      const n = el('div', 'note');
+      const img = el('img', 'emblem');
+      img.src = EMBLEM;
+      img.alt = '';
+      n.append(img, el('span', '', note));
+      out.appendChild(n);
+    }
+    if (!found.length) {
+      if (!note) {
+        const box = el('div', 'result');
+        box.append(el('p', '', '예약 내역이 없습니다.'), el('p', '', '이름과 연락처 끝 4자리를 다시 확인해 주세요.'));
+        out.appendChild(box);
+      }
+      return;
+    }
+    found.forEach(b => {
+      const k = key(b);
+      const card = el('div', 'result');
+      card.append(el('div', 'when', when(b)), el('p', '', '상담이 예약되어 있습니다.'));
+      const back = ['돌아가기', 'ghost', () => { mode = null; showCMsg(''); renderCheck(); }];
+      if (mode && mode.key === k && mode.type === 'cancel') {
+        card.appendChild(el('p', 'ask', '이 예약을 취소할까요?'));
+        card.appendChild(btnRow([['예약 취소하기', 'danger fill', () => doCancel(b)], back]));
+      } else if (mode && mode.key === k && mode.type === 'change') {
+        card.appendChild(el('p', 'ask', '바꿀 시간을 고르세요.'));
+        const g = el('div');
+        card.appendChild(g);
+        slotGrid(g, cSlots, { mineKey: k, selKey: mode.to && key(mode.to), onPick: s => { mode.to = s; showCMsg(''); renderCheck(); } });
+        if (mode.to) card.appendChild(el('p', 'ask', when(b) + '  →  ' + when(mode.to)));
+        card.appendChild(btnRow([['변경하기', 'primary', () => doChange(b), !mode.to], back]));
+      } else {
+        card.appendChild(btnRow([
+          ['시간 변경', '', () => startChange(b)],
+          ['예약 취소', 'danger', () => { mode = { type: 'cancel', key: k }; showCMsg(''); renderCheck(); }],
+        ]));
+      }
+      out.appendChild(card);
+    });
+  }
+
+  function refreshFound(note) {
+    return call('lookup', cred).then(r => {
+      found = r.ok ? r.found : [];
+      mode = null;
+      renderCheck(note);
+    });
+  }
+
+  function startChange(b) {
+    mode = { type: 'change', key: key(b), to: null };
+    cSlots = null;
+    showCMsg('');
+    renderCheck();
+    call('getPageData').then(d => { cSlots = d.slots; if (mode && mode.type === 'change') renderCheck(); });
+  }
+
+  function setBusy(v) { busy = v; renderCheck(); }
+
+  function doCancel(b) {
+    setBusy(true);
+    call('cancelMine', Object.assign({ date: b.date, time: b.time }, cred)).then(r => {
+      busy = false;
+      if (!r.ok) { showCMsg(r.msg); return refreshFound(); }
+      return refreshFound(when(b) + ' 예약이 취소되었습니다.');
+    }).catch(() => { busy = false; showCMsg('취소 중 문제가 생겼습니다. 잠시 후 다시 눌러 주세요.'); renderCheck(); });
+  }
+
+  function doChange(b) {
+    const to = mode.to;
+    setBusy(true);
+    call('changeMine', Object.assign({ date: b.date, time: b.time, newDate: to.date, newTime: to.time }, cred)).then(r => {
+      busy = false;
+      if (r.ok) return refreshFound(when(r) + '(으)로 변경되었습니다.');
+      showCMsg(r.msg);
+      if (r.reloadSlots) {
+        mode.to = null;
+        renderCheck();
+        return call('getPageData').then(d => { cSlots = d.slots; renderCheck(); });
+      }
+      return refreshFound();
+    }).catch(() => { busy = false; showCMsg('변경 중 문제가 생겼습니다. 잠시 후 다시 눌러 주세요.'); renderCheck(); });
+  }
+
+  $('checkForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const q = { name: $('cName').value.trim(), last4: $('cLast4').value.replace(/\D/g, '') };
+    showCMsg('');
+    $('cResult').textContent = '';
+    if (!q.name || q.last4.length !== 4) return showCMsg('학생 이름과 연락처 끝 4자리를 적어 주세요.');
+    $('cSubmit').disabled = true;
+    $('cSubmit').textContent = '확인하는 중…';
+    call('lookup', q).then(r => {
+      if (!r.ok) return showCMsg(r.msg);
+      cred = q;
+      found = r.found;
+      mode = null;
+      renderCheck();
+    }).catch(() => showCMsg('확인 중 문제가 생겼습니다. 잠시 후 다시 눌러 주세요.'))
+      .finally(() => { $('cSubmit').disabled = false; $('cSubmit').textContent = '확인하기'; });
+  });
+
+  function showTab(check) {
+    $('tabBook').classList.toggle('on', !check);
+    $('tabCheck').classList.toggle('on', check);
+    $('bookPane').hidden = check;
+    $('checkPane').hidden = !check;
+    if (!check) load();
+  }
+  $('tabBook').addEventListener('click', () => showTab(false));
+  $('tabCheck').addEventListener('click', () => showTab(true));
+
+  load();
+</script>
+</body>
+</html>
