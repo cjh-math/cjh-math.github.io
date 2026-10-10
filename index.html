@@ -90,6 +90,7 @@
   .done p { color: var(--sub); font-size: 14px; margin: 6px 0; }
   .empty, .loading { text-align: center; color: var(--sub); padding: 24px 0; }
   .loading .emblem { display: block; width: min(66vw, 60vh); max-width: 100%; height: auto; margin: 4px auto 16px; animation: breathe 1.6s ease-in-out infinite; }
+  body:has(#days .loading) .foot { display: none; }   /* 불러오는 동안엔 아래 작은 엠블럼 숨김 */
   @keyframes breathe { 50% { transform: scale(.94); opacity: .75; } }
   @media (prefers-reduced-motion: reduce) { .loading .emblem { animation: none; } }
   #checkForm { margin-top: 0; }
