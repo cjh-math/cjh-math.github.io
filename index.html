@@ -72,6 +72,8 @@
   input[type=text], input[type=tel], textarea { width: 100%; padding: 10px 12px; font-size: 16px;
     border: 1px solid var(--line); border-radius: 8px; font-family: inherit; color: var(--ink); background: #fff; }
   textarea { min-height: 80px; resize: vertical; }
+  .hint { font-size: 12px; color: var(--sub); margin: 10px 0 -6px; }
+  label .req { color: var(--warn); font-weight: 700; }
   .agree { display: flex; gap: 8px; align-items: flex-start; font-weight: normal; font-size: 13px; color: var(--sub); margin-top: 14px; }
   .agree input { margin-top: 3px; width: 18px; height: 18px; flex: none; }
   .submit { width: 100%; margin-top: 16px; padding: 14px; font-size: 17px; font-weight: 700; border: 0;
@@ -124,7 +126,7 @@
     <form id="checkForm">
       <label for="cName">학생 이름</label>
       <input type="text" id="cName" maxlength="30" placeholder="예약할 때 적은 이름">
-      <label for="cLast4">학부모 연락처 끝 4자리</label>
+      <label for="cLast4">연락처 끝 4자리 <span class="opt">(예약 때 적은 학생 또는 학부모 번호)</span></label>
       <input type="tel" id="cLast4" inputmode="numeric" maxlength="4" placeholder="예: 5678">
       <button class="submit" type="submit" id="cSubmit">확인하기</button>
       <div class="msg" id="cMsg" hidden></div>
@@ -144,13 +146,18 @@
 
     <form id="form" hidden autocomplete="on">
       <p class="picked" id="picked"></p>
-      <label for="student">학생 이름</label>
+      <label for="student">학생 이름 <span class="req">*</span></label>
       <input type="text" id="student" maxlength="30" required>
-      <label for="phone">학부모 연락처</label>
-      <input type="tel" id="phone" inputmode="tel" placeholder="010-1234-5678" maxlength="20" required>
+      <label for="school">학교 <span class="req">*</span></label>
+      <input type="text" id="school" maxlength="40" placeholder="예: 평촌고" required>
+      <p class="hint">학생 연락처와 학부모 연락처 중 <b>하나 이상</b> 적어 주세요.</p>
+      <label for="sphone">학생 연락처</label>
+      <input type="tel" id="sphone" inputmode="tel" placeholder="010-1234-5678" maxlength="20">
+      <label for="pphone">학부모 연락처</label>
+      <input type="tel" id="pphone" inputmode="tel" placeholder="010-1234-5678" maxlength="20">
       <label for="memo">상담 희망 내용 <span class="opt">(선택)</span></label>
       <textarea id="memo" maxlength="500" placeholder="미리 알려 주시면 상담 준비에 도움이 됩니다."></textarea>
-      <label class="agree"><input type="checkbox" id="agree">상담 일정 안내를 위해 학생 이름과 연락처를 수집하는 데 동의합니다. 상담이 끝나면 파기합니다.</label>
+      <label class="agree"><input type="checkbox" id="agree">상담 일정 안내를 위해 학생 이름·학교·연락처를 수집하는 데 동의합니다. 상담이 끝나면 파기합니다.</label>
       <button class="submit" type="submit" id="submit">예약하기</button>
       <div class="msg" id="msg" hidden></div>
     </form>
@@ -170,15 +177,15 @@
 <script>
   // 서버 호출 3갈래: Apps Script 화면 안 = google.script.run / GitHub Pages = 아래 주소로 JSON / 내 PC 파일 = 가짜 서버
   const API_URL = 'https://script.google.com/macros/s/AKfycbyPuIwd4l1KgbMj3sajS70cjImYzYWRh3i-B30QIU_rbNyJIp1BwK2c07ypM8PV0K5wEQ/exec';
-  const MODE = (typeof google !== 'undefined' && google.script) ? 'gas' : location.protocol === 'file:' ? 'mock' : 'api';
+  const MODE = (typeof google !== 'undefined' && google.script) ? 'gas' : /^(file|data):$/.test(location.protocol) ? 'mock' : 'api';   // 내 PC 파일·미리보기 창은 가짜 서버
   const mockDb = { '2026-10-10 18:30': { name: '테스트', last4: '0000' }, '2026-10-14 20:30': { name: '다른', last4: '9999' } };
   const mockDays = [['2026-10-10', ['18:30', '19:00', '19:30', '20:00', '20:30']], ['2026-10-14', ['19:00', '19:30', '20:00', '20:30']]];
   const mockApi = {
     getPageData: () => ({ title: '평촌청솔학원 최준호 T', subtitle: '예비 고3 무료 수학학습상담 예약', kakao: 'https://pf.kakao.com/_nGLZX/chat', phone: '010-9069-4464',
       notice: ['학생과 함께 상담에 오시는 경우, 나눠 드린 The Trend 모의고사 시험지를 풀어서 가져오시거나, 요즘 공부하고 있는 교재를 가져오시면 더 구체적인 상담이 가능합니다.', '시험지는 시험을 마친 뒤 채점만 해서 가져와 주세요. 오답 정리나 다시 풀기는 시험지가 아닌 별도의 공책에 해 주시면, 학생이 처음 푼 과정을 그대로 볼 수 있어 상담에 큰 도움이 됩니다. 풀이 흔적이 지저분해도 괜찮습니다.', '기타 문의 사항은 아래로 연락 주세요.'],
       slots: mockDays.flatMap(([d, ts]) => ts.map(t => ({ date: d, time: t, open: !mockDb[d + ' ' + t] }))) }),
-    book: f => { mockDb[f.date + ' ' + f.time] = { name: f.student, last4: f.phone.replace(/\D/g, '').slice(-4) }; return { ok: true, date: f.date, time: f.time }; },
-    lookup: q => ({ ok: true, found: Object.keys(mockDb).filter(k => mockDb[k].name === q.name && mockDb[k].last4 === q.last4).sort()
+    book: f => { mockDb[f.date + ' ' + f.time] = { name: f.student, last4s: [f.sphone, f.pphone].filter(Boolean).map(p => p.replace(/\D/g, '').slice(-4)) }; return { ok: true, date: f.date, time: f.time }; },
+    lookup: q => ({ ok: true, found: Object.keys(mockDb).filter(k => mockDb[k].name === q.name && (mockDb[k].last4s || [mockDb[k].last4]).indexOf(q.last4) >= 0).sort()
       .map(k => ({ date: k.slice(0, 10), time: k.slice(11) })) }),
     cancelMine: q => { delete mockDb[q.date + ' ' + q.time]; return { ok: true }; },
     changeMine: q => { mockDb[q.newDate + ' ' + q.newTime] = mockDb[q.date + ' ' + q.time]; delete mockDb[q.date + ' ' + q.time]; return { ok: true, date: q.newDate, time: q.newTime }; },
@@ -303,11 +310,16 @@
     if (!picked) return;
     const f = {
       date: picked.date, time: picked.time,
-      student: $('student').value.trim(), phone: $('phone').value.trim(),
+      student: $('student').value.trim(), school: $('school').value.trim(),
+      sphone: $('sphone').value.trim(), pphone: $('pphone').value.trim(),
       memo: $('memo').value.trim(), agree: $('agree').checked,
     };
+    const okPhone = p => p.replace(/\D/g, '').length >= 9;
     if (!f.student) return showMsg('학생 이름을 적어 주세요.');
-    if (f.phone.replace(/\D/g, '').length < 9) return showMsg('연락처를 확인해 주세요. (예: 010-1234-5678)');
+    if (!f.school) return showMsg('학교를 적어 주세요.');
+    if (!f.sphone && !f.pphone) return showMsg('학생 연락처와 학부모 연락처 중 하나 이상 적어 주세요.');
+    if (f.sphone && !okPhone(f.sphone)) return showMsg('학생 연락처를 확인해 주세요. (예: 010-1234-5678)');
+    if (f.pphone && !okPhone(f.pphone)) return showMsg('학부모 연락처를 확인해 주세요. (예: 010-1234-5678)');
     if (!f.agree) return showMsg('개인정보 수집에 동의해 주세요.');
     $('submit').disabled = true;
     $('submit').textContent = '예약하는 중…';
