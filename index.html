@@ -89,6 +89,9 @@
   .done .when { font-size: 20px; font-weight: 700; margin: 12px 0 4px; }
   .done p { color: var(--sub); font-size: 14px; margin: 6px 0; }
   .empty, .loading { text-align: center; color: var(--sub); padding: 24px 0; }
+  .loading .emblem { display: block; width: min(66vw, 60vh); max-width: 100%; height: auto; margin: 4px auto 16px; animation: breathe 1.6s ease-in-out infinite; }
+  @keyframes breathe { 50% { transform: scale(.94); opacity: .75; } }
+  @media (prefers-reduced-motion: reduce) { .loading .emblem { animation: none; } }
   #checkForm { margin-top: 0; }
   .result { margin-top: 14px; padding: 14px; border-radius: 10px; background: var(--blue-soft); text-align: center; }
   .result .when { font-size: 18px; font-weight: 700; color: var(--blue); margin: 2px 0; }
@@ -142,7 +145,7 @@
       <button class="refresh" type="button" id="refresh">↻ 새로고침</button>
     </div>
     <div class="msg" id="topmsg" hidden style="margin:0 0 12px"></div>
-    <div id="days"><div class="loading">시간표를 불러오는 중…</div></div>
+    <div id="days"><div class="loading"><img class="emblem" alt="">시간표를 불러오는 중…</div></div>
 
     <form id="form" hidden autocomplete="on">
       <p class="picked" id="picked"></p>
@@ -240,7 +243,12 @@
   /** 날짜별 시간 버튼. opt: { selKey, mineKey, onPick } */
   function slotGrid(box, slots, opt) {
     box.textContent = '';
-    if (!slots) { box.appendChild(el('div', 'loading', '시간표를 불러오는 중…')); return; }
+    if (!slots) {
+      const ld = el('div', 'loading'), img = el('img', 'emblem');
+      img.src = EMBLEM; img.alt = '';
+      ld.append(img, '시간표를 불러오는 중…');
+      box.appendChild(ld); return;
+    }
     if (!slots.length) { box.appendChild(el('div', 'empty', '지금 신청할 수 있는 상담 시간이 없습니다.')); return; }
     const byDate = {};
     slots.forEach(s => (byDate[s.date] = byDate[s.date] || []).push(s));
