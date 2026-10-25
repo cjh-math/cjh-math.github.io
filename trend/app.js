@@ -94,8 +94,9 @@
       '<section class="contact" aria-labelledby="ask"><p class="label" id="ask">질문 · 문의</p>' +
       '<a class="kakao" href="' + KAKAO_CHAT + '"' + (MOBILE ? '' : ' target="_blank" rel="noopener"') + '>' + ICON_TALK +
       '<span>카톡채널</span><span class="go" aria-hidden="true">›</span></a>' +
-      '<a class="insta" href="https://www.instagram.com/' + INSTA_ID + '/"' + (MOBILE ? '' : ' target="_blank" rel="noopener"') + '>' + ICON_INSTA +
-      '<span>인스타그램 팔로우하기 <b>@' + INSTA_ID + '</b></span><span class="go" aria-hidden="true">›</span></a></section>' +
+      // 색은 버튼에 직접 넣는다: 휴대폰이 예전 style.css 를 들고 있어도 흰 글자만 남지 않게
+      '<a class="insta" style="display:flex;align-items:center;gap:10px;margin-top:10px;padding:14px 16px;border-radius:12px;background:#dd2a7b;background:linear-gradient(90deg,#f58529,#dd2a7b 50%,#8134af);color:#fff;font-size:15px;font-weight:600;text-decoration:none" href="https://www.instagram.com/' + INSTA_ID + '/"' + (MOBILE ? '' : ' target="_blank" rel="noopener"') + '>' + ICON_INSTA.replace('<svg ', '<svg style="width:22px;height:22px;flex:none" ') +
+      '<span>인스타그램 팔로우하기 <b style="font-weight:600">@' + INSTA_ID + '</b></span><span class="go" style="margin-left:auto;font-size:22px;line-height:1" aria-hidden="true">›</span></a></section>' +
       '<footer class="foot">영상을 누르면 유튜브에서 열려요.</footer></div>';
   }
 
