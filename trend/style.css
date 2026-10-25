@@ -124,5 +124,10 @@ a.subj:hover .subj-go { background: var(--accent); color: var(--accent-ink); }
 .look-emblem .subj.off .subj-mark { opacity: .35; }
 .look-emblem .subj.off .subj-go { background: transparent; color: var(--muted); }
 
-.foot { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12.5px; }
+.contact { margin-top: 36px; max-width: 520px; }
+.contact a.kakao { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-radius: 12px; background: #fee500; color: #191919; font-size: 15px; font-weight: 600; text-decoration: none; }
+.contact a.kakao svg { width: 22px; height: 22px; flex: none; }
+.contact a.kakao .go { margin-left: auto; font-size: 22px; line-height: 1; }
+.contact a.kakao:hover { background: #f5dc00; }
+.foot { margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12.5px; }
 @media (prefers-reduced-motion: no-preference) { .tile, .subj, .btn, .subj-go { transition: border-color .15s, background-color .15s, color .15s; } }
