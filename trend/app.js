@@ -90,7 +90,7 @@
       '<section class="panel" id="panel" aria-live="polite">' + panel + '</section></div>' +
       '<section class="contact" aria-labelledby="ask"><p class="label" id="ask">질문 · 문의</p>' +
       '<a class="kakao" href="' + KAKAO_CHAT + '"' + (MOBILE ? '' : ' target="_blank" rel="noopener"') + '>' + ICON_TALK +
-      '<span>카톡채널</span><span class="go" aria-hidden="true">›</span></a></section>' +
+      '<span>최준호수학연구소 카톡채널로 문의하기</span><span class="go" aria-hidden="true">›</span></a></section>' +
       '<footer class="foot">영상을 누르면 유튜브에서 열려요.</footer></div>';
   }
 
