@@ -23,18 +23,10 @@
 
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function vid(r, k) { return r[k] && r[k][0] ? { id: r[k][0], len: r[k][1] || '', nums: r[k][2] || '' } : null; }
-  // "10, 12, 13, 14, 15, 21, 22" -> "10, 12–15, 21, 22번" (이어지는 번호는 묶는다)
+  // "10, 12, 13" -> "10, 12, 13번" (번호는 하나씩 다 적는다)
   function numsText(s) {
     var a = String(s).split(',').map(function (x) { return parseInt(x, 10); }).filter(function (x) { return !isNaN(x); });
-    if (!a.length) return '';
-    var out = [], i = 0;
-    while (i < a.length) {
-      var j = i;
-      while (j + 1 < a.length && a[j + 1] === a[j] + 1) j++;
-      out.push(j - i >= 2 ? a[i] + '–' + a[j] : a.slice(i, j + 1).join(', '));
-      i = j + 1;
-    }
-    return out.join(', ') + '번';
+    return a.length ? a.join(', ') + '번' : '';
   }
   function count(r) { return SUBJ.filter(function (s) { return vid(r, s.k); }).length; }
   function find(n) { return data.rounds.filter(function (r) { return r.n === n; })[0] || null; }
