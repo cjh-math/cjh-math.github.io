@@ -17,7 +17,7 @@
   var state = { sel: null };
   var KAKAO_CHAT = 'https://pf.kakao.com/_nGLZX/chat';
   var ICON_TALK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.8 5.3 4.6 6.7L5.6 21l4-2.6c.8.1 1.6.2 2.4.2 5.5 0 10-3.6 10-8S17.5 3 12 3z"/></svg>';
-  var INSTA_ID = 'n2bnorm';
+  var INSTA_ID = 'cjh.math';
   var ICON_INSTA = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.3" fill="currentColor"/></svg>';
 
   // 카카오톡 안에서 열리면 바깥 브라우저(크롬·사파리)로 넘긴다. 거기서는 영상이 유튜브 앱으로 열린다.
