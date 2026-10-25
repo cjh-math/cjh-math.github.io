@@ -93,7 +93,7 @@
       '<section class="panel" id="panel" aria-live="polite">' + panel + '</section></div>' +
       '<section class="contact" aria-labelledby="ask"><p class="label" id="ask">질문 · 문의</p>' +
       '<a class="kakao" href="' + KAKAO_CHAT + '"' + (MOBILE ? '' : ' target="_blank" rel="noopener"') + '>' + ICON_TALK +
-      '<span>최준호수학연구소 카카오톡 채널로 문의하기</span><span class="go" aria-hidden="true">›</span></a>' +
+      '<span>카톡채널</span><span class="go" aria-hidden="true">›</span></a>' +
       '<a class="insta" href="https://www.instagram.com/' + INSTA_ID + '/"' + (MOBILE ? '' : ' target="_blank" rel="noopener"') + '>' + ICON_INSTA +
       '<span>인스타그램 팔로우하기 <b>@' + INSTA_ID + '</b></span><span class="go" aria-hidden="true">›</span></a></section>' +
       '<footer class="foot">영상을 누르면 유튜브에서 열려요.</footer></div>';
