@@ -17,9 +17,6 @@
   var state = { sel: null };
   var KAKAO_CHAT = 'https://pf.kakao.com/_nGLZX/chat';
   var ICON_TALK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.8 5.3 4.6 6.7L5.6 21l4-2.6c.8.1 1.6.2 2.4.2 5.5 0 10-3.6 10-8S17.5 3 12 3z"/></svg>';
-  var INSTA_ID = 'cjh.math';
-  var ICON_INSTA = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.3" fill="currentColor"/></svg>';
-
   // 카카오톡 안에서 열리면 바깥 브라우저(크롬·사파리)로 넘긴다. 거기서는 영상이 유튜브 앱으로 열린다.
   function kakaoOut() { return 'kakaotalk://web/openExternal?url=' + encodeURIComponent(location.href); }
   if (INAPP === '카카오톡') location.href = kakaoOut();
@@ -93,10 +90,7 @@
       '<section class="panel" id="panel" aria-live="polite">' + panel + '</section></div>' +
       '<section class="contact" aria-labelledby="ask"><p class="label" id="ask">질문 · 문의</p>' +
       '<a class="kakao" href="' + KAKAO_CHAT + '"' + (MOBILE ? '' : ' target="_blank" rel="noopener"') + '>' + ICON_TALK +
-      '<span>카톡채널</span><span class="go" aria-hidden="true">›</span></a>' +
-      // 색은 버튼에 직접 넣는다: 휴대폰이 예전 style.css 를 들고 있어도 흰 글자만 남지 않게
-      '<a class="insta" style="display:flex;align-items:center;gap:10px;margin-top:10px;padding:14px 16px;border-radius:12px;background:#dd2a7b;background:linear-gradient(90deg,#f58529,#dd2a7b 50%,#8134af);color:#fff;font-size:15px;font-weight:600;text-decoration:none" href="https://www.instagram.com/' + INSTA_ID + '/"' + (MOBILE ? '' : ' target="_blank" rel="noopener"') + '>' + ICON_INSTA.replace('<svg ', '<svg style="width:22px;height:22px;flex:none" ') +
-      '<span>인스타그램 팔로우하기 <b style="font-weight:600">@' + INSTA_ID + '</b></span><span class="go" style="margin-left:auto;font-size:22px;line-height:1" aria-hidden="true">›</span></a></section>' +
+      '<span>카톡채널</span><span class="go" aria-hidden="true">›</span></a></section>' +
       '<footer class="foot">영상을 누르면 유튜브에서 열려요.</footer></div>';
   }
 

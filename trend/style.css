@@ -129,10 +129,5 @@ a.subj:hover .subj-go { background: var(--accent); color: var(--accent-ink); }
 .contact a.kakao svg { width: 22px; height: 22px; flex: none; }
 .contact a.kakao .go { margin-left: auto; font-size: 22px; line-height: 1; }
 .contact a.kakao:hover { background: #f5dc00; }
-.contact a.insta { display: flex; align-items: center; gap: 10px; margin-top: 10px; padding: 14px 16px; border-radius: 12px; background: linear-gradient(90deg, #f58529, #dd2a7b 50%, #8134af); color: #ffffff; font-size: 15px; font-weight: 600; text-decoration: none; }
-.contact a.insta b { font-weight: 600; opacity: .9; }
-.contact a.insta svg { width: 22px; height: 22px; flex: none; }
-.contact a.insta .go { margin-left: auto; font-size: 22px; line-height: 1; }
-.contact a.insta:hover { filter: brightness(1.06); }
 .foot { margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12.5px; }
 @media (prefers-reduced-motion: no-preference) { .tile, .subj, .btn, .subj-go { transition: border-color .15s, background-color .15s, color .15s; } }
