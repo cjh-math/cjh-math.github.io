@@ -15,6 +15,8 @@
     : /Line\//i.test(ua) ? '라인'
     : /DaumApps/i.test(ua) ? '다음 앱' : '';
   var state = { sel: null };
+  var KAKAO_CHAT = 'https://pf.kakao.com/_nGLZX/chat';
+  var ICON_TALK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.8 5.3 4.6 6.7L5.6 21l4-2.6c.8.1 1.6.2 2.4.2 5.5 0 10-3.6 10-8S17.5 3 12 3z"/></svg>';
 
   // 카카오톡 안에서 열리면 바깥 브라우저(크롬·사파리)로 넘긴다. 거기서는 영상이 유튜브 앱으로 열린다.
   function kakaoOut() { return 'kakaotalk://web/openExternal?url=' + encodeURIComponent(location.href); }
@@ -87,6 +89,9 @@
       '<div class="layout"><section aria-labelledby="pick"><p class="label" id="pick">회차 고르기</p><div class="rounds">' + data.rounds.map(tileHtml).join('') + '</div>' +
       '<p class="legend">칸 아래 공 · 확 · 미 표시가 진한 과목은 영상이 올라와 있어요.</p></section>' +
       '<section class="panel" id="panel" aria-live="polite">' + panel + '</section></div>' +
+      '<section class="contact" aria-labelledby="ask"><p class="label" id="ask">질문 · 문의</p>' +
+      '<a class="kakao" href="' + KAKAO_CHAT + '"' + (MOBILE ? '' : ' target="_blank" rel="noopener"') + '>' + ICON_TALK +
+      '<span>최준호수학연구소 카카오톡 채널로 문의하기</span><span class="go" aria-hidden="true">›</span></a></section>' +
       '<footer class="foot">영상을 누르면 유튜브에서 열려요.</footer></div>';
   }
 
