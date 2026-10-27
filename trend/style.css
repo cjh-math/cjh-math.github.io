@@ -131,3 +131,7 @@ a.subj:hover .subj-go { background: var(--accent); color: var(--accent-ink); }
 .contact a.kakao:hover { background: #f5dc00; }
 .foot { margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12.5px; }
 @media (prefers-reduced-motion: no-preference) { .tile, .subj, .btn, .subj-go { transition: border-color .15s, background-color .15s, color .15s; } }
+
+/* 회차 전용 페이지(trend/14/ 등) */
+.only .layout { grid-template-columns: minmax(0, 1fr) !important; max-width: 640px; }
+.only .panel { position: static; }

@@ -5,6 +5,10 @@
     { k: 'm', name: '미적', short: '미', full: '미적분', range: '23–30번' }
   ];
   var data = window.TREND || { playlist: '', rounds: [] };
+  // 회차 전용 페이지(trend/14/ 등): 그 회차만 보여 주고 회차 고르기·재생목록 단추는 숨긴다.
+  var ONLY = window.TREND_ONLY || null;
+  var BASE = window.TREND_BASE || '';
+  if (ONLY) data.rounds = data.rounds.filter(function (r) { return r.n === ONLY; });
   var ua = navigator.userAgent || '';
   var ANDROID = /Android/i.test(ua);
   var MOBILE = ANDROID || /iPhone|iPad|iPod/i.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
@@ -85,13 +89,13 @@
         '<div class="subjects">' + SUBJ.map(function (s) { return subjHtml(r, s); }).join('') + '</div>';
     }
     document.getElementById('app').innerHTML =
-      '<div class="wrap look-emblem"><header class="mast"><div class="brand"><img class="emblem" src="emblem.png" alt="최준호 T 엠블럼">' +
+      '<div class="wrap look-emblem' + (ONLY ? ' only' : '') + '"><header class="mast"><div class="brand"><img class="emblem" src="' + BASE + 'emblem.png" alt="최준호 T 엠블럼">' +
       '<div class="brand-text"><span class="eyebrow">2027학년도 대학수학능력시험 대비 · 수학 영역</span><h1>The Trend 모의고사</h1></div></div>' +
-      '<div class="mast-row"><span class="mast-sub">회차별 해설강의 · 최준호 T · 영상 ' + total + '개</span><span class="mast-links">' +
-      '<a class="btn" href="https://www.youtube.com/playlist?list=' + esc(data.playlist) + '" target="_blank" rel="noopener">재생목록 전체 보기 ↗</a></span></div></header>' +
+      '<div class="mast-row"><span class="mast-sub">' + (ONLY ? ONLY + '회차 해설강의 · 최준호 T' : '회차별 해설강의 · 최준호 T · 영상 ' + total + '개') + '</span>' + (ONLY ? '' : '<span class="mast-links">' +
+      '<a class="btn" href="https://www.youtube.com/playlist?list=' + esc(data.playlist) + '" target="_blank" rel="noopener">재생목록 전체 보기 ↗</a></span>') + '</div></header>' +
       inappHtml() +
-      '<div class="layout"><section aria-labelledby="pick"><p class="label" id="pick">회차 고르기</p><div class="rounds">' + data.rounds.map(tileHtml).join('') + '</div>' +
-      '<p class="legend">칸 아래 공 · 확 · 미 표시가 진한 과목은 영상이 올라와 있어요.</p></section>' +
+      '<div class="layout">' + (ONLY ? '' : '<section aria-labelledby="pick"><p class="label" id="pick">회차 고르기</p><div class="rounds">' + data.rounds.map(tileHtml).join('') + '</div>' +
+      '<p class="legend">칸 아래 공 · 확 · 미 표시가 진한 과목은 영상이 올라와 있어요.</p></section>') +
       '<section class="panel" id="panel" aria-live="polite">' + panel + '</section></div>' +
       '<section class="contact" aria-labelledby="ask"><p class="label" id="ask">질문 · 문의</p>' +
       '<a class="kakao" href="' + KAKAO_CHAT + '"' + (MOBILE ? '' : ' target="_blank" rel="noopener"') + '>' + ICON_TALK +
@@ -101,7 +105,7 @@
 
   function select(n, scroll) {
     state.sel = n;
-    try { history.replaceState(null, '', '#r' + n); } catch (e) {}
+    if (!ONLY) { try { history.replaceState(null, '', '#r' + n); } catch (e) {} }
     render();
     if (scroll && window.matchMedia('(max-width: 779px)').matches) {
       var p = document.getElementById('panel');
