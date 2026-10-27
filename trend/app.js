@@ -97,9 +97,9 @@
       '<div class="layout">' + (ONLY ? '' : '<section aria-labelledby="pick"><p class="label" id="pick">회차 고르기</p><div class="rounds">' + data.rounds.map(tileHtml).join('') + '</div>' +
       '<p class="legend">칸 아래 공 · 확 · 미 표시가 진한 과목은 영상이 올라와 있어요.</p></section>') +
       '<section class="panel" id="panel" aria-live="polite">' + panel + '</section></div>' +
-      '<section class="contact" aria-labelledby="ask"><p class="label" id="ask">질문 · 문의</p>' +
+      (ONLY ? '' : '<section class="contact" aria-labelledby="ask"><p class="label" id="ask">질문 · 문의</p>' +
       '<a class="kakao" href="' + KAKAO_CHAT + '"' + (MOBILE ? '' : ' target="_blank" rel="noopener"') + '>' + ICON_TALK +
-      '<span>최준호수학연구소 카톡채널로 문의하기</span><span class="go" aria-hidden="true">›</span></a></section>' +
+      '<span>최준호수학연구소 카톡채널로 문의하기</span><span class="go" aria-hidden="true">›</span></a></section>') +
       '<footer class="foot">영상을 누르면 유튜브에서 열려요.</footer></div>';
   }
 
