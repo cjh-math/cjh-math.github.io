@@ -194,12 +194,32 @@
     cancelMine: q => { delete mockDb[q.date + ' ' + q.time]; return { ok: true }; },
     changeMine: q => { mockDb[q.newDate + ' ' + q.newTime] = mockDb[q.date + ' ' + q.time]; delete mockDb[q.date + ' ' + q.time]; return { ok: true, date: q.newDate, time: q.newTime }; },
   };
+  // 휴대폰(카카오톡·네이버 앱 안 브라우저, 불안정한 데이터망)에서 요청이 응답 없이 걸리면 「불러오는 중」이 끝나지 않았다(11-14).
+  // → 모든 요청에 시간 제한을 두고, 다시 보내도 되는 읽기 요청(시간표·예약 확인)은 자동으로 두 번 더 보낸다.
+  const SAFE = { getPageData: true, lookup: true };
+  function limit(p, ms) {
+    return new Promise((res, rej) => {
+      const t = setTimeout(() => rej(new Error('timeout')), ms);
+      p.then(v => { clearTimeout(t); res(v); }, e => { clearTimeout(t); rej(e); });
+    });
+  }
+  function viaApi(fn, arg) {
+    return limit(fetch(API_URL, { method: 'POST', body: JSON.stringify({ fn: fn, arg: arg }), credentials: 'omit', cache: 'no-store' })
+      .then(r => { if (!r.ok) throw new Error('http ' + r.status); return r.json(); }), SAFE[fn] ? 12000 : 40000);
+  }
+  function viaGas(fn, arg) {
+    return limit(new Promise((res, rej) => google.script.run.withSuccessHandler(res).withFailureHandler(rej)[fn](arg)), SAFE[fn] ? 12000 : 40000);
+  }
   function call(fn, arg) {
     if (MODE === 'mock') return new Promise(res => setTimeout(() => res(mockApi[fn](arg)), 300));
-    if (MODE === 'gas') return new Promise((res, rej) => google.script.run.withSuccessHandler(res).withFailureHandler(rej)[fn](arg));
-    return fetch(API_URL, { method: 'POST', body: JSON.stringify({ fn: fn, arg: arg }) })
-      .then(r => r.json())
-      .then(r => { if (r && r.error) throw new Error(r.msg); return r; });
+    let tries = SAFE[fn] ? 3 : 1, first = true;
+    const once = () => {
+      // 옛 구글 주소(gas) 화면은 첫 시도만 google.script.run, 걸리면 GitHub 화면과 같은 길(fetch)로
+      const p = (MODE === 'gas' && first) ? viaGas(fn, arg) : viaApi(fn, arg);
+      first = false;
+      return p.catch(e => { if (--tries > 0) return once(); throw e; });
+    };
+    return once().then(r => { if (r && r.error) throw new Error(r.msg); return r; });
   }
 
   const $ = id => document.getElementById(id);
@@ -297,8 +317,16 @@
       notice.hidden = false;
       current = d.slots;
       render();
-    }).catch(() => {
-      $('days').innerHTML = '<div class="empty">시간표를 불러오지 못했습니다. 잠시 후 새로고침해 주세요.</div>';
+    }).catch(e => {
+      const box = $('days'), msg = el('div', 'empty', '시간표를 불러오지 못했습니다. 인터넷 연결을 확인하고 아래 버튼을 눌러 주세요.');
+      const again = el('button', 'refresh', '↻ 다시 불러오기');
+      again.type = 'button';
+      again.style.cssText = 'display:block;margin:12px auto 0;padding:10px 18px;font-size:15px';
+      again.addEventListener('click', () => { slotGrid(box, null); load(); });
+      msg.appendChild(again);
+      msg.appendChild(el('div', '', '(' + ((e && e.message) || 'error').slice(0, 40) + ')')).style.cssText = 'font-size:11px;margin-top:8px;opacity:.6';
+      box.textContent = '';
+      box.appendChild(msg);
     });
   }
 
