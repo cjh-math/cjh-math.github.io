@@ -89,10 +89,8 @@
   .done .when { font-size: 20px; font-weight: 700; margin: 12px 0 4px; }
   .done p { color: var(--sub); font-size: 14px; margin: 6px 0; }
   .empty, .loading { text-align: center; color: var(--sub); padding: 24px 0; }
-  .loading .emblem { display: block; width: min(66vw, 60vh); max-width: 100%; height: auto; margin: 4px auto 16px; animation: breathe 1.6s ease-in-out infinite; }
+  .loading .emblem { display: block; width: min(66vw, 60vh); max-width: 100%; height: auto; margin: 4px auto 16px; }   /* 숨쉬기 애니메이션 뺌(11-14): 일부 안드로이드 크롬에서 화면이 깨지고 멈춤 */
   body:has(#days .loading) .foot { display: none; }   /* 불러오는 동안엔 아래 작은 엠블럼 숨김 */
-  @keyframes breathe { 50% { transform: scale(.94); opacity: .75; } }
-  @media (prefers-reduced-motion: reduce) { .loading .emblem { animation: none; } }
   #checkForm { margin-top: 0; }
   .result { margin-top: 14px; padding: 14px; border-radius: 10px; background: var(--blue-soft); text-align: center; }
   .result .when { font-size: 18px; font-weight: 700; color: var(--blue); margin: 2px 0; }
@@ -188,7 +186,7 @@
   }
   window.addEventListener('error', function (e) { diagNote('오류: ' + (e.message || e) + (e.lineno ? ' (줄 ' + e.lineno + ')' : '')); });
   window.addEventListener('unhandledrejection', function (e) { diagNote('오류: ' + (e.reason && e.reason.message || e.reason)); });
-  setTimeout(function () { if (!window.__started) diagNote('스크립트가 시작되지 않았습니다 (v1114b)'); }, 4000);
+  setTimeout(function () { if (!window.__started) diagNote('스크립트가 시작되지 않았습니다 (v1114c)'); }, 4000);
 </script>
 <script>
   window.__started = true;
@@ -230,7 +228,7 @@
       n++;
       if (fn === 'getPageData') {
         const t0 = Date.now(), k = n;
-        const tick = () => { if (k === n && document.querySelector('#days .loading')) { diagNote('서버 응답 기다리는 중 · 시도 ' + k + '/3 · ' + Math.round((Date.now() - t0) / 1000) + '초 (v1114b)'); setTimeout(tick, 1000); } };
+        const tick = () => { if (k === n && document.querySelector('#days .loading')) { diagNote('서버 응답 기다리는 중 · 시도 ' + k + '/3 · ' + Math.round((Date.now() - t0) / 1000) + '초 (v1114c)'); setTimeout(tick, 1000); } };
         setTimeout(tick, 2000);
       }
       // 옛 구글 주소(gas) 화면은 첫 시도만 google.script.run, 걸리면 GitHub 화면과 같은 길(fetch)로
@@ -338,7 +336,7 @@
       render();
       const dg = $('diag'); if (dg) dg.parentNode.removeChild(dg);
     }).catch(e => {
-      diagNote('실패: ' + ((e && e.message) || e) + ' (v1114b)');
+      diagNote('실패: ' + ((e && e.message) || e) + ' (v1114c)');
       const box = $('days'), msg = el('div', 'empty', '시간표를 불러오지 못했습니다. 인터넷 연결을 확인하고 아래 버튼을 눌러 주세요.');
       const again = el('button', 'refresh', '↻ 다시 불러오기');
       again.type = 'button';
