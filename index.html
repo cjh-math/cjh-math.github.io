@@ -179,6 +179,19 @@
 </div>
 
 <script>
+  // 진단(11-14): 아래 본 스크립트가 어떤 휴대폰에서 멈추면 그 오류를 화면에 바로 보인다. 옛 브라우저도 읽도록 ES5 로만.
+  function diagNote(t) {
+    var d = document.getElementById('days'); if (!d) return;
+    var n = document.getElementById('diag');
+    if (!n) { n = document.createElement('div'); n.id = 'diag'; n.style.cssText = 'font-size:12px;color:#8a5a00;text-align:center;margin-top:6px'; d.parentNode.insertBefore(n, d.nextSibling); }
+    n.textContent = t;
+  }
+  window.addEventListener('error', function (e) { diagNote('오류: ' + (e.message || e) + (e.lineno ? ' (줄 ' + e.lineno + ')' : '')); });
+  window.addEventListener('unhandledrejection', function (e) { diagNote('오류: ' + (e.reason && e.reason.message || e.reason)); });
+  setTimeout(function () { if (!window.__started) diagNote('스크립트가 시작되지 않았습니다 (v1114b)'); }, 4000);
+</script>
+<script>
+  window.__started = true;
   // 서버 호출 3갈래: Apps Script 화면 안 = google.script.run / GitHub Pages = 아래 주소로 JSON / 내 PC 파일 = 가짜 서버
   const API_URL = 'https://script.google.com/macros/s/AKfycbyPuIwd4l1KgbMj3sajS70cjImYzYWRh3i-B30QIU_rbNyJIp1BwK2c07ypM8PV0K5wEQ/exec';
   const MODE = (typeof google !== 'undefined' && google.script) ? 'gas' : /^(file|data):$/.test(location.protocol) ? 'mock' : 'api';   // 내 PC 파일·미리보기 창은 가짜 서버
@@ -212,8 +225,14 @@
   }
   function call(fn, arg) {
     if (MODE === 'mock') return new Promise(res => setTimeout(() => res(mockApi[fn](arg)), 300));
-    let tries = SAFE[fn] ? 3 : 1, first = true;
+    let tries = SAFE[fn] ? 3 : 1, first = true, n = 0;
     const once = () => {
+      n++;
+      if (fn === 'getPageData') {
+        const t0 = Date.now(), k = n;
+        const tick = () => { if (k === n && document.querySelector('#days .loading')) { diagNote('서버 응답 기다리는 중 · 시도 ' + k + '/3 · ' + Math.round((Date.now() - t0) / 1000) + '초 (v1114b)'); setTimeout(tick, 1000); } };
+        setTimeout(tick, 2000);
+      }
       // 옛 구글 주소(gas) 화면은 첫 시도만 google.script.run, 걸리면 GitHub 화면과 같은 길(fetch)로
       const p = (MODE === 'gas' && first) ? viaGas(fn, arg) : viaApi(fn, arg);
       first = false;
@@ -317,14 +336,15 @@
       notice.hidden = false;
       current = d.slots;
       render();
+      const dg = $('diag'); if (dg) dg.parentNode.removeChild(dg);
     }).catch(e => {
+      diagNote('실패: ' + ((e && e.message) || e) + ' (v1114b)');
       const box = $('days'), msg = el('div', 'empty', '시간표를 불러오지 못했습니다. 인터넷 연결을 확인하고 아래 버튼을 눌러 주세요.');
       const again = el('button', 'refresh', '↻ 다시 불러오기');
       again.type = 'button';
       again.style.cssText = 'display:block;margin:12px auto 0;padding:10px 18px;font-size:15px';
       again.addEventListener('click', () => { slotGrid(box, null); load(); });
       msg.appendChild(again);
-      msg.appendChild(el('div', '', '(' + ((e && e.message) || 'error').slice(0, 40) + ')')).style.cssText = 'font-size:11px;margin-top:8px;opacity:.6';
       box.textContent = '';
       box.appendChild(msg);
     });
